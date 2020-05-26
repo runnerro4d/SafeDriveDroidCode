@@ -1,6 +1,7 @@
 package com.example.roadprotector;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -65,6 +66,7 @@ import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import static com.google.maps.android.PolyUtil.decode;
 import static com.google.maps.android.PolyUtil.isLocationOnPath;
@@ -133,6 +135,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //View view = getLayoutInflater().inflate(R.layout.progress);
     Dialog dialogGetRoutes = null;
     Dialog dialogGetSafeRoute = null;
+    ConstraintLayout constraintLayout;
+    BottomSheetBehavior bottomSheetBehavior;
 
    /** private GoogleMap mMap;
 
@@ -167,6 +171,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
        // mapFragment.getMapAsync(this);
+
+        constraintLayout = (ConstraintLayout) findViewById(R.id.bottom_sheet_explore);
+        bottomSheetBehavior = BottomSheetBehavior.from(constraintLayout);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLocation();
        // makeRequest("");
@@ -542,7 +549,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //    }
 
     public void displayRouteSafety(int routeNo) throws JSONException {
-
+        bottomSheetBehavior.setPeekHeight(160, true);
         Log.i("allRouteDetails", allRouteDetails.toString());
         //Toast.makeText(this, allRouteDetails.toString(), Toast.LENGTH_LONG).show();
 
@@ -566,7 +573,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         String routeDetail = "Route No: " + (routeNo + 1 ) + "\n" + "Safety Rating: " + allRouteSafetyRating.get(routeNo) +
                 "\n" + "Duration: " +  duration +
-                "\n" + "Distance: " + distance;
+                "\n" + "Disshowtance: " + distance;
         routeDetailTV = findViewById(R.id.routeDetail_exploreId);
         RouteNumber = findViewById(R.id.routeNumber_exploreId);
         Risk = findViewById(R.id.RouteRisk_explore);
@@ -574,7 +581,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Distance = findViewById(R.id.RouteDistance_explore);
 
         routeDetailTV.setText("Route Details ");
-        RouteNumber.setText("Route No: " + routeNo + 1 );
+        RouteNumber.setText("Route No: " + (routeNo + 1 ) );
         Risk.setText("Risk: " + allRouteSafetyRating.get(routeNo));
         Duration.setText("Duration: " + duration);
         Distance.setText("Distance: " + distance);
@@ -1239,6 +1246,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
            }
 
            */
+
+            try {
+                displayRouteSafety(safest);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             dialogGetSafeRoute.dismiss();
 
            //

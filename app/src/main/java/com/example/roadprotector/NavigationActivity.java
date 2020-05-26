@@ -858,9 +858,14 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
 //                            .position(restStop)
 //                            .title("Rest Stop").snippet(disabled + FastFood + picnic + toiletpresent + waterpresent).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
                     selectedRestStop.add(restStop);
+                    Marker restMarker = mMap.addMarker(new MarkerOptions()
+                            .position(restStop)
+                            .title("Rest Stop").snippet(disabled + FastFood + picnic + toiletpresent + waterpresent).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                    restStopMarker.add(restMarker);
                 }
                 else{
                     rejectedRestStops.add(restStop);
+
 //                    alertbuilder = new AlertDialog.Builder(this);
 //                    alertbuilder.setMessage("Ops! No rest stops present on the selected route.") .setTitle("Alert!")
 //                            .setCancelable(false).setNegativeButton("OK", new DialogInterface.OnClickListener() {
@@ -882,15 +887,15 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
             Toast.makeText(this,"No rest stops for selected route!", Toast.LENGTH_LONG).show();
         }
 
-        if(selectedRestStop.size()!=0){
-            for(int i = 0; i< selectedRestStop.size(); i++){
-                Marker restMarker = mMap.addMarker(new MarkerOptions()
-                        .position(selectedRestStop.get(i))
-                        .title("Rest Stop").snippet(disabled + FastFood + picnic + toiletpresent + waterpresent).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-                restStopMarker.add(restMarker);
-            }
-
-        }
+//        if(selectedRestStop.size()!=0){
+//            for(int i = 0; i< selectedRestStop.size(); i++){
+//                Marker restMarker = mMap.addMarker(new MarkerOptions()
+//                        .position(selectedRestStop.get(i))
+//                        .title("Rest Stop").snippet(disabled + FastFood + picnic + toiletpresent + waterpresent).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+//                restStopMarker.add(restMarker);
+//            }
+//
+//        }
 
         Log.i("selctedstops"  , selectedRestStop.toString());
         Log.i("rejectedStops", rejectedRestStops.toString());

@@ -61,10 +61,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/exploreId" />
 
-        <ImageView
+        <TextView
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Crash Evader"
+            android:textColor="#000000"
+            android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/navigateId"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
