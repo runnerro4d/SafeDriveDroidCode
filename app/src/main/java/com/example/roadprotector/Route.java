@@ -14,14 +14,17 @@ public class Route {
     private int routeDurationInSeconds;
     private int routeLengthInMeters;
     private int totalAccidents;
+    private JSONArray bounds;
 
-    public Route(int routeNo, JSONArray routeAccidentData, List<LatLng> routeLocationCoordinates, int routeDurationInSeconds, int routeLengthInMeters, int totalAccidents) {
+    public Route(int routeNo,JSONArray bounds , JSONArray routeAccidentData, List<LatLng> routeLocationCoordinates, int routeDurationInSeconds, int routeLengthInMeters, int totalAccidents) {
         this.routeNo = routeNo;
         this.routeAccidentData = routeAccidentData;
         this.routeLocationCoordinates = routeLocationCoordinates;
         this.routeDurationInSeconds = routeDurationInSeconds;
         this.routeLengthInMeters = routeLengthInMeters;
         this.totalAccidents = totalAccidents;
+        this.bounds = bounds;
+
     }
 
     public int getRouteNo() {
@@ -30,6 +33,14 @@ public class Route {
 
     public void setRouteNo(int routeNo) {
         this.routeNo = routeNo;
+    }
+
+    public JSONArray getBounds() {
+        return bounds;
+    }
+
+    public void setBounds(JSONArray bounds) {
+        this.bounds = bounds;
     }
 
     public JSONArray getRouteAccidentData() {

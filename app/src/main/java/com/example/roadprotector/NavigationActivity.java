@@ -27,8 +27,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -66,6 +69,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -137,7 +141,7 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
     private TextView picnicTables;
     private Button navigate;
     private Button showRestStop;
-    private FloatingActionButton restStopfab;
+    private ExtendedFloatingActionButton restStopfab;
     private FloatingActionButton disabledToiletfab;
     private FloatingActionButton fastFoodfab;
     private FloatingActionButton picnicTablefab;
@@ -155,6 +159,7 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
     private boolean picnicTableState = false;
     private boolean toiletState = false;
     private boolean waterState = false;
+    private ImageButton bottomSheetArrowButton;
 
 
 
@@ -176,6 +181,7 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
         setContentView(R.layout.activity_navigation);
         constraintLayout = (ConstraintLayout) findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(constraintLayout);
+        bottomSheetArrowButton = findViewById(R.id.arrowbuttonid);
 
         restStopfab = findViewById(R.id.Rest0);
         disabledToiletfab = findViewById(R.id.Rest1);
@@ -211,6 +217,18 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
         edit.putInt(PICNIC_TABLE, 0);
         edit.putInt(WATER, 0);
         edit.commit();
+
+        bottomSheetArrowButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    bottomSheetArrowButton.setImageResource(R.drawable.arrow_down);
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    bottomSheetArrowButton.setImageResource(R.drawable.arrow_up);
+                }
+            }
+        });
 
 
 
@@ -256,11 +274,12 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
         //     AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
         //                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG));
+        autocompleteFragment.setCountry("AU");
         autocompleteFragment.setLocationRestriction(RectangularBounds.newInstance(
                 new LatLng(-39.234713, 140.962526),
                 new LatLng(-33.981125, 149.975296)));
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG));
-        autocompleteFragment.setCountry("AU");
 
 
 // Set up a PlaceSelectionListener to handle the response.
@@ -293,6 +312,8 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
 
 
     }
+
+
 
 
 
@@ -818,38 +839,38 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
 
 
                 if (filteredListRestStop.get(i).getDisabledToilet() == 1){
-                    disabled = "Disabled Toilet: Y," ;
+                    disabled = "Disabled Toilet:Y," ;
                 } else if (filteredListRestStop.get(i).getDisabledToilet() == 0)
                 {
-                    disabled = "Disabled Toilet: N,"  ;
+                    disabled = "Disabled Toilet:N,"  ;
                 }
 
                 if (filteredListRestStop.get(i).getFastfood() == 1){
-                    FastFood = "FastFood: Y,";
+                    FastFood = "FastFood:Y,";
                 } else if (filteredListRestStop.get(i).getFastfood() == 0)
                 {
-                    FastFood = "FastFood: N,";
+                    FastFood = "FastFood:N,";
                 }
 
                 if (filteredListRestStop.get(i).getPicnictable() == 1){
-                    picnic = "Picnic Table: Y,";
+                    picnic = "Picnic Table:Y,";
                 } else if (filteredListRestStop.get(i).getPicnictable() == 0)
                 {
-                    picnic = "Picnic Table: N,";
+                    picnic = "Picnic Table:N,";
                 }
 
                 if (filteredListRestStop.get(i).getToilet() == 1){
-                    toiletpresent = "Toilet: Y,";
+                    toiletpresent = "Toilet:Y,";
                 } else if (filteredListRestStop.get(i).getToilet() == 0)
                 {
-                    toiletpresent = "Toilet: N,";
+                    toiletpresent = "Toilet:N,";
                 }
 
                 if (filteredListRestStop.get(i).getWater() == 1){
-                    waterpresent = "Water: Y";
+                    waterpresent = "Water:Y";
                 } else if (filteredListRestStop.get(i).getWater() == 0)
                 {
-                    waterpresent = "Water: N";
+                    waterpresent = "Water:N";
                 }
 
                 if(isLocationOnPath(restStop, selectedPolyline, false, 1000)){
@@ -906,6 +927,8 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
+
         // time miliseconds distance meters
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 10, new LocationListener() {
             @Override
@@ -920,7 +943,7 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
 
                 // If user goes away from slected route notify
                 if(selectedPolyline != null) {
-                    if (!isLocationOnPath(position, selectedPolyline, true, 1000)) {
+                    if (!isLocationOnPath(position, selectedPolyline, false, 2000)) {
                         mediaPlayer = MediaPlayer.create(NavigationActivity.this, R.raw.not_on_route);
                         mediaPlayer.start();
                         Toast.makeText(NavigationActivity.this, "Caution! not on selected route", Toast.LENGTH_SHORT).show();
@@ -1005,6 +1028,16 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
         routeHeaderTV.setText("Destination: "  + destinationPlace );
         routeNumberTV.setText("Route No: " + (routeNo + 1 ));
         routeRiskTV.setText("Risk: " +  allRouteSafetyRating.get(routeNo));
+        if(allRouteSafetyRating.get(routeNo).equals("Lowest"))
+        {routeRiskTV.setTextColor(0xFF50c878);
+        }
+        else if(allRouteSafetyRating.get(routeNo).equals("Medium")) {
+            routeRiskTV.setTextColor(0xFFF9A602);
+
+        }
+        else if (allRouteSafetyRating.get(routeNo).equals("Highest") ){
+            routeRiskTV.setTextColor(0xFFED2939);
+        }
         routeDistanceTV.setText("Distance: " + distance);
         routeDurationTV.setText("Duration: " + duration);
 
@@ -1229,6 +1262,7 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
             ArrayList<Route> allRoutes = new ArrayList<>();
             allRoutes = routeParser.parser(routesData);
             allRouteDetails = allRoutes;
+            JSONArray bounds;
 
             int totalRoutes = allRoutes.size();
 
@@ -1264,6 +1298,19 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
 
             int safest = allRouteAccidentRate.indexOf(Collections.min(allRouteAccidentRate)) ;
             int mostUnsafe  = allRouteAccidentRate.indexOf(Collections.max(allRouteAccidentRate));
+            bounds = allRoutes.get(safest).getBounds();
+
+            LatLngBounds safestBound = null;
+            try {
+                safestBound = new LatLngBounds(
+                        new LatLng(bounds.getDouble(0), bounds.getDouble(1)- 0.5), new LatLng(bounds.getDouble(2), bounds.getDouble(3)+ 0.5));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+// Set the camera to the greatest possible zoom level that includes the
+// bounds
+
 
 
 
@@ -1300,10 +1347,13 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
                 //Toast.makeText(MapsActivity.this, "Polyline Num: " + String.valueOf(routeNo) , Toast.LENGTH_LONG).show();
 
             }
+
+
             Log.i("allRoutesPolylines:   ", allRoutesPolylines.toString());
             //Toast.makeText(MapsActivity.this, "allRoutesPolylines:   " +  allRoutesPolylines.toString(), Toast.LENGTH_LONG).show();
 
-                     dialogGetSafeRoute.dismiss();
+            dialogGetSafeRoute.dismiss();
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(safestBound, 0));
             // Display details of safest route
             try {
                 displayRouteSafety(safest);
@@ -1380,7 +1430,7 @@ public class NavigationActivity extends AppCompatActivity  implements OnMapReady
 
     public JSONObject getRoutesData(String urlParams) {
 
-        final String BASE_URL = "http://accident-api.eba-rjmccapm.ap-southeast-2.elasticbeanstalk.com/";
+        final String BASE_URL = "http://accident-api.eba-rjmccapm.ap-southeast-2.elasticbeanstalk.com/diff/";
         String APIKey = "AIzaSyCYfveclaFp0QlPtfon7Q7pJg35OBAkqrU";
         String getURL = BASE_URL + APIKey + "/" + urlParams;
 //        JSONArray rArray = null;

@@ -43,20 +43,20 @@
             tools:ignore="MissingConstraints,NotSibling" />
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/Rest0"
-            android:layout_width="56dp"
+            android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:layout_marginTop="350dp"
-
             android:layout_marginEnd="12dp"
-            android:src="@drawable/ic_edit_location_grey_56dp"
+            android:text="Rest Stop"
             app:backgroundTint="@color/quantum_amberA200"
+            app:icon="@drawable/ic_reststop_icon"
             app:layout_constraintBottom_toTopOf="@+id/Cons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/newCons">
 
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/Rest1"
@@ -78,7 +78,7 @@
             android:layout_height="56dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_water"
+            android:src="@drawable/ic_water_fountain_icon"
             app:backgroundTint="@color/quantum_amber200"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Rest1">

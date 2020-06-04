@@ -47,7 +47,7 @@ public class GeoFencingBroadcastReceiver extends BroadcastReceiver {
             case Geofence.GEOFENCE_TRANSITION_ENTER:
                 mediaPlayer = MediaPlayer.create(context, R.raw.entering);
                 mediaPlayer.start();
-                Toast.makeText(context, "GEOFENCE_TRANSITION_ENTER", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "CAUTION! ENTERING ACCIDENT PRONE AREA", Toast.LENGTH_SHORT).show();
               //  notificationHelper.sendHighPriorityNotification("GEOFENCE_TRANSITION_ENTER", "", MapsActivity.class);
                 break;
 //            case Geofence.GEOFENCE_TRANSITION_DWELL:
@@ -59,7 +59,7 @@ public class GeoFencingBroadcastReceiver extends BroadcastReceiver {
             case Geofence.GEOFENCE_TRANSITION_EXIT:
                 mediaPlayer = MediaPlayer.create(context, R.raw.exiting_zone);
                 mediaPlayer.start();
-                Toast.makeText(context, "GEOFENCE_TRANSITION_EXIT", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "EXITING ACCIDENT PRONE AREA.", Toast.LENGTH_SHORT).show();
                // notificationHelper.sendHighPriorityNotification("GEOFENCE_TRANSITION_EXIT", "", MapsActivity.class);
                 break;
         }

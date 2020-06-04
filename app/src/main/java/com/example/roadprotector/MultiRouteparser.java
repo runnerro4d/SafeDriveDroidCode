@@ -34,7 +34,7 @@ public class MultiRouteparser {
 
                 List decodedOverviewPolyline = decode(overViewPolyLine);
 
-                Route route = new Route( jsonrouteObject.getInt("RouteNo"), jsonrouteObject.getJSONArray("data"), decodedOverviewPolyline,
+                Route route = new Route( jsonrouteObject.getInt("RouteNo"),  jsonrouteObject.getJSONArray("bounds"), jsonrouteObject.getJSONArray("data"), decodedOverviewPolyline,
                         jsonrouteObject.getInt("routeDurationInSeconds"), jsonrouteObject.getInt("routeLengthInMeters"),
                         jsonrouteObject.getInt("totalAccidents")
                 );

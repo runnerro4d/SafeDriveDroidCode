@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_sheet"
+    style="?attr/bottomSheetStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
@@ -10,15 +11,14 @@
     android:padding="16dp"
     app:behavior_hideable="false"
     app:behavior_peekHeight="0dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    style="?attr/bottomSheetStyle">
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
     <TextView
         android:id="@+id/routeDetailId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="60dp"
         android:ems="10"
         android:fontFamily="@font/allerta"
         android:gravity="start|top"
@@ -211,29 +211,44 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/getreststopibuttonid"
-        android:layout_width="146dp"
+        android:layout_width="wrap_content"
         android:layout_height="54dp"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/button_stuff"
-        android:text="Rest Stops"
+        android:text="   Rest Stops  "
 
         android:textColor="#FFFFFF"
         app:cornerRadius="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/navigateId"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RouteDistance" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/navigateId"
-        android:layout_width="135dp"
+        android:layout_width="wrap_content"
         android:layout_height="54dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/button_stuff"
-        android:text="Navigate"
+        android:text="    Navigate    "
         android:textColor="#FFFFFF"
         app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/getreststopibuttonid"
         app:layout_constraintTop_toBottomOf="@+id/RouteDistance" />
+
+    <ImageButton
+        android:id="@+id/arrowbuttonid"
+        android:layout_width="242dp"
+        android:layout_height="50dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/routeDetailId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/arrow_up" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

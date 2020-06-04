@@ -11,7 +11,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="680dp">
+        android:layout_height="627dp">
 
         <Button
             android:id="@+id/button"

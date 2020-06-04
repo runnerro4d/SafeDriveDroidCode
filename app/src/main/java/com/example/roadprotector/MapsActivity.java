@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -130,6 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<Route> allRouteDetails;
     private ArrayList<Circle> routeAllCircles = new ArrayList<>();
     public static int routeDuration;
+    private ImageButton bottomSheetArrowButton;
 
 
     //View view = getLayoutInflater().inflate(R.layout.progress);
@@ -174,11 +176,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         constraintLayout = (ConstraintLayout) findViewById(R.id.bottom_sheet_explore);
         bottomSheetBehavior = BottomSheetBehavior.from(constraintLayout);
+        bottomSheetArrowButton = findViewById(R.id.arrowbuttonid);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLocation();
        // makeRequest("");
         geofencingClient = LocationServices.getGeofencingClient(this);
         geofenceHelper = new GeoFenceHelper(this);
+
+        bottomSheetArrowButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    bottomSheetArrowButton.setImageResource(R.drawable.arrow_down);
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    bottomSheetArrowButton.setImageResource(R.drawable.arrow_up);
+                }
+            }
+        });
+
 
 
 
@@ -188,13 +204,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Places.initialize(getApplicationContext(), apiKey);
 
-        LatLngBounds.Builder boundsBuilder = LatLngBounds.builder()
-                .include(new LatLng(-34.12,141.98))
-                .include(new LatLng(-39.03,146.32))
-                .include(new LatLng(-36.37,140.98))
-                .include(new LatLng(-37.55,149.75));
-
-        RectangularBounds rectangularBounds = RectangularBounds.newInstance(boundsBuilder.build());
+//        LatLngBounds.Builder boundsBuilder = LatLngBounds.builder()
+//                .include(new LatLng(-34.12,141.98))
+//                .include(new LatLng(-39.03,146.32))
+//                .include(new LatLng(-36.37,140.98))
+//                .include(new LatLng(-37.55,149.75));
+//
+//        RectangularBounds rectangularBounds = RectangularBounds.newInstance(boundsBuilder.build());
         // Retrieve a PlacesClient (previously initialized - see MainActivity)
         PlacesClient placesClient = Places.createClient(this);
 //(AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
@@ -203,7 +219,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //     AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
         //                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-        originFrag.setLocationRestriction(rectangularBounds);
+
+        originFrag.setLocationRestriction(RectangularBounds.newInstance(
+                new LatLng(-39.234713, 140.962526),
+                new LatLng(-33.981125, 149.975296)));
+       // originFrag.setLocationRestriction(rectangularBounds);
         originFrag.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG));
         originFrag.setCountry("AU");
 
@@ -239,9 +259,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         AutocompleteSupportFragment destFrag = (AutocompleteSupportFragment)   getSupportFragmentManager().findFragmentById(R.id.endLoc);
-        destFrag.setLocationRestriction(rectangularBounds);
+
         destFrag.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG));
         destFrag.setCountry("AU");
+        destFrag.setLocationRestriction(RectangularBounds.newInstance(
+                new LatLng(-39.234713, 140.962526),
+                new LatLng(-33.981125, 149.975296)));
 
         destFrag.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -583,6 +606,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         routeDetailTV.setText("Route Details ");
         RouteNumber.setText("Route No: " + (routeNo + 1 ) );
         Risk.setText("Risk: " + allRouteSafetyRating.get(routeNo));
+        if(allRouteSafetyRating.get(routeNo).equals("Lowest"))
+        {Risk.setTextColor(0xFF50c878);
+        }
+        else if(allRouteSafetyRating.get(routeNo).equals("Medium")) {
+            Risk.setTextColor(0xFFF9A602);
+
+        }
+        else if (allRouteSafetyRating.get(routeNo).equals("Highest") ){
+            Risk.setTextColor(0xFFED2939);
+        }
         Duration.setText("Duration: " + duration);
         Distance.setText("Distance: " + distance);
 
@@ -1323,7 +1356,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public JSONObject getRoutesData(String urlParams) {
 
-        final String BASE_URL = "http://accident-api.eba-rjmccapm.ap-southeast-2.elasticbeanstalk.com/";
+        final String BASE_URL = "http://accident-api.eba-rjmccapm.ap-southeast-2.elasticbeanstalk.com/diff/";
         String APIKey = "AIzaSyBZqLIP9yoJtQUwL-0vhgl0DBL_PVcQq6s";
         String getURL = BASE_URL + APIKey + "/" + urlParams;
 //        JSONArray rArray = null;
